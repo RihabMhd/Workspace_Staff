@@ -1,4 +1,4 @@
-import { getEmployees, addEmployee, updateEmployee, deleteEmployee, getEmployee } from './store.js';
+import { getEmployees, addEmployee, updateEmployee, deleteEmployee, getEmployee, roleRestrictions, canAccess, assignEmployeeToRoom } from './store.js';
 import { displayEmployees, clearEmployeeForm, populateForm, addExperienceField, getExperiences, displayRoomEmployees } from './ui.js';
 import { validateForm, validateField } from './validations.js';
 
@@ -9,6 +9,15 @@ const cancelBtn = document.getElementById('cancelBtn');
 const employeeForm = document.getElementById('employeeForm');
 const addExperienceBtn = document.getElementById('addExperienceBtn');
 const modalTitle = document.getElementById('modalTitle');
+const roomModal = document.getElementById('roomModal');
+const addBtns = document.querySelectorAll('.add-btn');
+const closeRoom = document.getElementById('closeRoomModal');
+const detail = document.getElementById("employeeDetailModal");
+const closeDetail = document.getElementById('closeDetailModal');
+const list = document.querySelector(".UnassignedEmployeeList");
+
+
+let selectedRoom = null;
 
 // this function runs when the page loads and sets everything up
 function init() {
@@ -22,11 +31,38 @@ function setupEventListeners() {
     ajoutBtn.addEventListener('click', openAddEmployeeModal);
     closeModalBtn.addEventListener('click', closeEmployeeModal);
     cancelBtn.addEventListener('click', closeEmployeeModal);
-    
-    employeeModal.addEventListener('click', (e) => {
-        if (e.target === employeeModal) {
-            closeEmployeeModal();
+    closeRoom.addEventListener('click', closeRoomModal);
+    closeDetail.addEventListener('click', closeDetailModal);
+
+    list.addEventListener("click", e => {
+        // Handle clicking employee name to see details
+        if (e.target.classList.contains("employee-name")) {
+            const card = e.target.closest(".employeeD");
+            if (!card) return;
+
+            const empId = card.dataset.id;
+            const emp = getEmployee(empId);
+            openEmployeeDetail(emp);
+            return;
         }
+
+        // Handle clicking assign button
+        if (e.target.classList.contains("assign-btn")) {
+            const card = e.target.closest(".employeeD");
+            if (!card) return;
+
+            const empId = card.dataset.id;
+            assignEmployeeToRoom(empId, selectedRoom);
+            closeRoomModal();
+            refreshUI();
+        }
+    });
+
+    addBtns.forEach((addBtn) => {
+        addBtn.addEventListener('click', () => {
+            selectedRoom = addBtn.dataset.room;
+            openRoomModal();
+        });
     });
 
     employeeForm.addEventListener('submit', handleFormSubmit);
@@ -79,16 +115,126 @@ function closeEmployeeModal() {
     clearEmployeeForm();
 }
 
+// opens the modal to choose an employee to put in a room
+function openRoomModal() {
+    const employees = getEmployees();
+    modalTitle.textContent = `Choose an Employee for ${selectedRoom}`;
+
+    list.innerHTML = "";
+
+    const eligibleEmployees = employees.filter(emp => 
+        !emp.room && canAccess(emp.role, selectedRoom)
+    );
+
+    if (eligibleEmployees.length === 0) {
+        list.innerHTML = '<p style="text-align: center; padding: 20px;">No eligible employees available for this room.</p>';
+    } else {
+        eligibleEmployees.forEach((emp) => {
+            list.innerHTML += `
+                <div class="employeeD employee-card" style="margin:10px" data-id="${emp.id}">
+                    <div class="employee-header">
+                        <img src="${emp.photo}" alt="${emp.name}" class="employee-photo" />
+                        <div>
+                            <h3 class="employee-name">${emp.name}</h3>
+                            <p><strong>Rôle :</strong> ${emp.role}</p>
+                        </div>
+                    </div>
+                    <button class="buttonAssigning assign-btn">Assign to this room</button>
+                </div>
+            `;
+        });
+    }
+
+    roomModal.classList.add('active');
+}
+
+// closes the modal window
+function closeRoomModal() {
+    roomModal.classList.remove('active');
+}
+
+// opens the modal to show the details
+function openEmployeeDetail(emp) {
+    const content = document.getElementById("employeeDetailContent");
+
+    const experiencesHTML = emp.experiences.map(exp => `
+        <div class="experience-item">
+            <div class="form-group">
+                <label>Company</label>
+                <input type="text" class="exp-company" value="${exp.company}" disabled>
+            </div>
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" class="exp-title" value="${exp.title}" disabled>
+            </div>
+            <div class="form-group">
+                <label>Duration</label>
+                <input type="text" class="exp-duration" value="${exp.duration}" disabled>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea class="exp-description" disabled>${exp.description}</textarea>
+            </div>
+        </div>
+    `).join('');
+
+    content.innerHTML = `
+        <form id="employeeForm">
+            <div class="modal-body">
+                <input type="hidden" id="employee-id">
+
+                <div class="form-group">
+                    <label for="employee-name">Full Name *</label>
+                    <input type="text" id="employee-name" required value="${emp.name}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="employee-role">Role/Position *</label>
+                    <input type="text" id="employee-role" required value="${emp.role}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="employee-email">Email *</label>
+                    <input type="email" id="employee-email" required value="${emp.email}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="employee-phone">Phone *</label>
+                    <input type="tel" id="employee-phone" required value="${emp.telephone}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="employee-photo">Photo URL</label>
+                    <div id="photo-preview" class="photo-preview">
+                        <img id="photo-preview-img" src="${emp.photo}" alt="Preview">
+                    </div>
+                </div>
+
+                <div class="experiences-section">
+                    ${experiencesHTML}
+                </div>
+            </div>
+        </form>
+    `;
+
+    detail.classList.add("active");
+}
+
+// closes the modal window
+function closeDetailModal() {
+    detail.classList.remove('active');
+}
+
 // shows a preview of the photo when you put in a URL
 function handlePhotoPreview(e) {
     const url = e.target.value.trim();
     const preview = document.getElementById('photo-preview');
     const previewImg = document.getElementById('photo-preview-img');
-    
+
     if (url) {
         previewImg.src = url;
         preview.classList.remove('hidden');
-        
+
         previewImg.onerror = () => {
             preview.classList.add('hidden');
         };
@@ -114,10 +260,16 @@ function handleFormSubmit(e) {
         email: document.getElementById('employee-email').value.trim(),
         telephone: document.getElementById('employee-phone').value.trim(),
         photo: document.getElementById('employee-photo').value.trim(),
-        experiences: getExperiences()
+        experiences: getExperiences(),
+        room: null // Initialize with no room assignment
     };
 
     if (employeeId) {
+        // Preserve existing room assignment when updating
+        const existingEmployee = getEmployee(employeeId);
+        if (existingEmployee && existingEmployee.room) {
+            employeeData.room = existingEmployee.room;
+        }
         updateEmployee(employeeData);
     } else {
         addEmployee(employeeData);
@@ -146,8 +298,9 @@ function handleEmployeeListClick(e) {
 
 // refreshes the page to show all employees and rooms
 function refreshUI() {
-    const unassignedEmployees = getEmployees();
+    const unassignedEmployees = getEmployees().filter(emp => !emp.room);
     displayEmployees(unassignedEmployees);
+    
     const rooms = ['Conference Room', 'Reception', 'Security Room', 'Server Room', 'Staff Room', 'Archives Room'];
     rooms.forEach(room => {
         displayRoomEmployees(room);

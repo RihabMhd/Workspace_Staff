@@ -1,3 +1,5 @@
+import { getEmployees, unassignEmployeeFromRoom } from './store.js';
+
 // displays all the employees on the page
 function displayEmployees(employees) {
     const employeeList = document.getElementById('employeeList');
@@ -29,7 +31,7 @@ function displayEmployees(employees) {
                     <ul>
                         ${emp.experiences.map(exp => `
                             <li>
-                                <strong>${exp.title}</strong> – ${exp.company} (${exp.duration})
+                                <strong>${exp.title}</strong> — ${exp.company} (${exp.duration})
                                 <br>${exp.description}
                             </li>
                         `).join('')}
@@ -44,6 +46,45 @@ function displayEmployees(employees) {
         `;
 
         employeeList.appendChild(empElement);
+    });
+}
+
+// display all the employees in one room
+function displayRoomEmployees(room) {
+    const roomContainer = document.getElementById(`room-${room}`);
+    if (!roomContainer) return;
+
+    const employeesInRoom = getEmployees().filter(emp => emp.room === room);
+
+    roomContainer.innerHTML = '';
+
+    employeesInRoom.forEach(emp => {
+        const empElement = document.createElement('div');
+        empElement.classList.add('employee-card');
+        empElement.setAttribute('data-id', emp.id);
+
+        empElement.innerHTML = `
+            <div class="employee-header">
+                <img src="${emp.photo}" alt="${emp.name}" class="employee-photo" />
+                <div>
+                    <h3>${emp.name}</h3>
+                    <p><strong>Rôle :</strong> ${emp.role}</p>
+                </div>
+                <button class="buttonAssigning unassign-btn" data-employee-id="${emp.id}">x</button>
+            </div>
+        `;
+
+        const unassignBtn = empElement.querySelector('.unassign-btn');
+        unassignBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            unassignEmployeeFromRoom(emp.id);
+            displayRoomEmployees(room);
+            
+            const unassignedEmployees = getEmployees().filter(e => !e.room);
+            displayEmployees(unassignedEmployees);
+        });
+
+        roomContainer.appendChild(empElement);
     });
 }
 
@@ -64,7 +105,7 @@ function populateForm(employee) {
     }
 
     clearExperiences();
-    
+
     if (employee.experiences && employee.experiences.length > 0) {
         employee.experiences.forEach(exp => {
             addExperienceField(exp);

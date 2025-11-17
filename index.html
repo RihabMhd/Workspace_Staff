@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="./assets/css/modal.css">
     <link rel="stylesheet" href="./assets/css/employees.css">
 </head>
+
 <body>
     <div class="container">
 
@@ -15,7 +17,8 @@
             <div class="sidebar-header">
                 <h1>
                     <svg class="icon-users" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        <path
+                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                     </svg>
                     Unassigned Staff
                 </h1>
@@ -70,18 +73,18 @@
                 <h2 id="modalTitle">Add Employee</h2>
                 <button class="close-modal" id="closeModal">&times;</button>
             </div>
-            
+
             <form id="employeeForm">
                 <div class="modal-body">
                     <input type="hidden" id="employee-id">
-                    
+
                     <div class="form-group">
                         <label for="employee-name">Full Name *</label>
                         <input type="text" id="employee-name" required>
                         <div class="error-message hidden" id="employee-name-error"></div>
                     </div>
 
-                     <div class="form-group">
+                    <div class="form-group">
                         <label for="employee-role">Role/Position *</label>
                         <select id="employee-role" required>
                             <option value="">Select a role...</option>
@@ -122,7 +125,7 @@
                                 <span>+</span> Add Experience
                             </button>
                         </div>
-                        
+
                         <div id="experiencesContainer"></div>
                     </div>
                 </div>
@@ -135,6 +138,28 @@
         </div>
     </div>
 
+    <div id="roomModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Choose an Employee</h2>
+                <button class="close-modal" id="closeRoomModal">&times;</button>
+            </div>
+            <div class="UnassignedEmployeeList"></div>
+        </div>
+    </div>
+
+    <div id="employeeDetailModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <button class="close-modal" id="closeDetailModal">&times;</button>
+            </div>
+            <div id="employeeDetailContent"></div>
+        </div>
+    </div>
+
+
+
     <script type="module" src="./assets/js/main.js"></script>
 </body>
+
 </html>
