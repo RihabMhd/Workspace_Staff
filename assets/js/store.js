@@ -3,13 +3,29 @@ let employees = [];
 
 // define restricted rooms per role
 export const roleRestrictions = {
-    "Receptionist": ["Server Room", "Security Room"], 
-    "IT Guy": ["Reception", "Security Room"],            
-    "Security": ["Reception", "Server Room"],       
-    "Manager": [],                                                  
-    "Cleaning": ["Archives Room"],                               
-    "Other": ["Reception", "Server Room", "Security Room", "Archives Room"] 
+    "Receptionist": ["Server Room", "Security Room"],
+    "IT Guy": ["Reception", "Security Room"],
+    "Security": ["Reception", "Server Room"],
+    "Manager": [],
+    "Cleaning": ["Archives Room"],
+    "Other": ["Reception", "Server Room", "Security Room", "Archives Room"]
 };
+
+//localStorage
+export function loadEmployees() {
+    const data = localStorage.getItem("Employees");
+    if (data) {
+        employees = JSON.parse(data);
+    } else {
+        employees = [];
+    }
+    return employees;
+}
+
+export function SaveEmployees() {
+    return localStorage.setItem('Employees', JSON.stringify(employees));
+}
+
 
 // returns all employees from the array
 export function getEmployees() {
@@ -24,6 +40,7 @@ export function getEmployee(id) {
 // adds a new employee to the array
 export function addEmployee(employee) {
     employees.push(employee);
+    SaveEmployees();
     return employee;
 }
 
@@ -32,6 +49,7 @@ export function updateEmployee(employeeData) {
     const index = employees.findIndex(emp => emp.id === employeeData.id);
     if (index !== -1) {
         employees[index] = employeeData;
+        SaveEmployees();
         return employees[index];
     }
     return null;
@@ -40,6 +58,7 @@ export function updateEmployee(employeeData) {
 // removes an employee from the array by their id
 export function deleteEmployee(id) {
     employees = employees.filter(emp => emp.id !== id);
+    SaveEmployees();
 }
 
 // assigns an employee to a room
@@ -47,6 +66,7 @@ export function assignEmployeeToRoom(employeeId, room) {
     const employee = getEmployee(employeeId);
     if (employee && canAccess(employee.role, room)) {
         employee.room = room;
+        SaveEmployees();
         return true;
     }
     return false;
@@ -57,6 +77,7 @@ export function unassignEmployeeFromRoom(employeeId) {
     const employee = getEmployee(employeeId);
     if (employee) {
         employee.room = null;
+        SaveEmployees();
         return true;
     }
     return false;
@@ -64,7 +85,7 @@ export function unassignEmployeeFromRoom(employeeId) {
 
 // function to check access
 export function canAccess(role, room) {
-    if (!roleRestrictions.hasOwnProperty(role)) return false; 
+    if (!roleRestrictions.hasOwnProperty(role)) return false;
     const restrictedRooms = roleRestrictions[role];
     return !restrictedRooms.includes(room);
 }

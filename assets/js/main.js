@@ -1,4 +1,4 @@
-import { getEmployees, addEmployee, updateEmployee, deleteEmployee, getEmployee, roleRestrictions, canAccess, assignEmployeeToRoom } from './store.js';
+import { getEmployees, addEmployee, updateEmployee, deleteEmployee, getEmployee, loadEmployees, canAccess, assignEmployeeToRoom } from './store.js';
 import { displayEmployees, clearEmployeeForm, populateForm, addExperienceField, getExperiences, displayRoomEmployees } from './ui.js';
 import { validateForm, validateField } from './validations.js';
 
@@ -21,6 +21,7 @@ let selectedRoom = null;
 
 // this function runs when the page loads and sets everything up
 function init() {
+    loadEmployees(); 
     refreshUI();
     setupEventListeners();
     addExperienceField();

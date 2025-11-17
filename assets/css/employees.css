@@ -108,3 +108,17 @@
     flex-direction: column;
     gap: 8px;
 }
+
+
+
+@media (max-width: 767px) {
+    .employee-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+    }
+
+ 
+}
