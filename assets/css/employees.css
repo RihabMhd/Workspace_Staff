@@ -1,0 +1,110 @@
+/* Employee Card Styles */
+.employee-card {
+    background: white;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.employee-card:hover {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+    border-color: #d0d0d0;
+}
+
+.employee-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.employee-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e5e7eb;
+    background: #f3f4f6;
+}
+
+.employee-header h3 {
+    margin: 0 0 2px 0;
+    font-size: 14px;
+    color: #111827;
+    font-weight: 600;
+}
+
+.employee-header p {
+    margin: 0;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.employee-card>p {
+    margin: 6px 0;
+    font-size: 11px;
+    color: #6b7280;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.employee-card>p strong {
+    color: #374151;
+    font-weight: 500;
+}
+
+/* Experiences Section in Card */
+.experiences {
+    display: none;
+    /* Hide in compact view */
+}
+
+/* Actions Buttons */
+.actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.edit-btn,
+.delete-btn {
+    flex: 1;
+    padding: 6px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.edit-btn {
+    background-color: #0a84ff;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #0077ed;
+}
+
+.delete-btn {
+    background-color: #ff3b30;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #ff2d20;
+}
+
+.room-employees {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
