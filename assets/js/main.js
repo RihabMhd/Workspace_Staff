@@ -36,7 +36,6 @@ function setupEventListeners() {
     closeDetail.addEventListener('click', closeDetailModal);
 
     list.addEventListener("click", e => {
-        // Handle clicking employee name to see details
         if (e.target.classList.contains("employee-name")) {
             const card = e.target.closest(".employeeD");
             if (!card) return;
@@ -47,7 +46,6 @@ function setupEventListeners() {
             return;
         }
 
-        // Handle clicking assign button
         if (e.target.classList.contains("assign-btn")) {
             const card = e.target.closest(".employeeD");
             if (!card) return;
@@ -169,8 +167,13 @@ function openEmployeeDetail(emp) {
                 <input type="text" class="exp-title" value="${exp.title}" disabled>
             </div>
             <div class="form-group">
-                <label>Duration</label>
-                <input type="text" class="exp-duration" value="${exp.duration}" disabled>
+                <label>Start Date</label>
+                <input type="date" class="exp-start-date" value="${exp.startDate || ''}" disabled>
+            </div>
+
+            <div class="form-group">
+                <label>End Date</label>
+                <input type="date" class="exp-end-date" value="${exp.endDate || ''}" disabled>
             </div>
             <div class="form-group">
                 <label>Description</label>
@@ -185,30 +188,29 @@ function openEmployeeDetail(emp) {
                 <input type="hidden" id="employee-id">
 
                 <div class="form-group">
-                    <label for="employee-name">Full Name *</label>
+                    <div id="photo-preview" class="photo-preview">
+                        <img id="photo-preview-img" src="${emp.photo}" alt="Preview">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="employee-name">Full Name </label>
                     <input type="text" id="employee-name" required value="${emp.name}" disabled>
                 </div>
 
                 <div class="form-group">
-                    <label for="employee-role">Role/Position *</label>
+                    <label for="employee-role">Role/Position </label>
                     <input type="text" id="employee-role" required value="${emp.role}" disabled>
                 </div>
 
                 <div class="form-group">
-                    <label for="employee-email">Email *</label>
+                    <label for="employee-email">Email </label>
                     <input type="email" id="employee-email" required value="${emp.email}" disabled>
                 </div>
 
                 <div class="form-group">
-                    <label for="employee-phone">Phone *</label>
+                    <label for="employee-phone">Phone </label>
                     <input type="tel" id="employee-phone" required value="${emp.telephone}" disabled>
-                </div>
-
-                <div class="form-group">
-                    <label for="employee-photo">Photo URL</label>
-                    <div id="photo-preview" class="photo-preview">
-                        <img id="photo-preview-img" src="${emp.photo}" alt="Preview">
-                    </div>
                 </div>
 
                 <div class="experiences-section">
@@ -262,11 +264,10 @@ function handleFormSubmit(e) {
         telephone: document.getElementById('employee-phone').value.trim(),
         photo: document.getElementById('employee-photo').value.trim(),
         experiences: getExperiences(),
-        room: null // Initialize with no room assignment
+        room: null 
     };
 
     if (employeeId) {
-        // Preserve existing room assignment when updating
         const existingEmployee = getEmployee(employeeId);
         if (existingEmployee && existingEmployee.room) {
             employeeData.room = existingEmployee.room;

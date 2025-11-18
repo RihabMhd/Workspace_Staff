@@ -31,7 +31,7 @@ function displayEmployees(employees) {
                     <ul>
                         ${emp.experiences.map(exp => `
                             <li>
-                                <strong>${exp.title}</strong> — ${exp.company} (${exp.duration})
+                                <strong>${exp.title}</strong> – ${exp.company} (${exp.duration})
                                 <br>${exp.description}
                             </li>
                         `).join('')}
@@ -104,6 +104,7 @@ function populateForm(employee) {
         preview.classList.remove('hidden');
     }
 
+    // FIXED: Clear experiences first and reset counter
     clearExperiences();
 
     if (employee.experiences && employee.experiences.length > 0) {
@@ -120,6 +121,7 @@ function clearEmployeeForm() {
     const form = document.getElementById('employeeForm');
     form.reset();
     document.getElementById('employee-id').value = '';
+    
     clearExperiences();
 
     const preview = document.getElementById('photo-preview');
@@ -143,6 +145,7 @@ function addExperienceField(experienceData = null) {
         window.experienceCounter = 0;
     }
     window.experienceCounter++;
+    
     const container = document.getElementById('experiencesContainer');
 
     const experienceItem = document.createElement('div');
@@ -166,8 +169,13 @@ function addExperienceField(experienceData = null) {
         </div>
         
         <div class="form-group">
-            <label>Duration</label>
-            <input type="text" class="exp-duration" value="${experienceData?.duration || ''}" placeholder="e.g., 2020-2023 or 3 years">
+            <label>Start Date</label>
+            <input type="date" class="exp-start-date" value="${experienceData?.startDate || ''}" required>
+        </div>
+
+        <div class="form-group">
+            <label>End Date</label>
+            <input type="date" class="exp-end-date" value="${experienceData?.endDate || ''}" required>
         </div>
         
         <div class="form-group">
@@ -187,10 +195,12 @@ function removeExperience(expId) {
     }
 }
 
-// clears all experience fields from the form
+// clear all experience fields and reset the counter
 function clearExperiences() {
     const container = document.getElementById('experiencesContainer');
-    container.innerHTML = '';
+    if (container) {
+        container.innerHTML = '';
+    }
     window.experienceCounter = 0;
 }
 
@@ -202,14 +212,16 @@ function getExperiences() {
     experienceItems.forEach(item => {
         const company = item.querySelector('.exp-company').value.trim();
         const title = item.querySelector('.exp-title').value.trim();
-        const duration = item.querySelector('.exp-duration').value.trim();
+        const startDate = item.querySelector('.exp-start-date').value.trim();
+        const endDate = item.querySelector('.exp-end-date').value.trim();
         const description = item.querySelector('.exp-description').value.trim();
 
         if (company || title) {
             experiences.push({
                 company,
                 title,
-                duration,
+                startDate,
+                endDate,
                 description
             });
         }

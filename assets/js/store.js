@@ -11,6 +11,9 @@ export const roleRestrictions = {
     "Other": ["Reception", "Server Room", "Security Room", "Archives Room"]
 };
 
+export const ROOM_CAPACITY = 5;
+
+
 //localStorage
 export function loadEmployees() {
     const data = localStorage.getItem("Employees");
@@ -64,12 +67,19 @@ export function deleteEmployee(id) {
 // assigns an employee to a room
 export function assignEmployeeToRoom(employeeId, room) {
     const employee = getEmployee(employeeId);
-    if (employee && canAccess(employee.role, room)) {
-        employee.room = room;
-        SaveEmployees();
-        return true;
+    if (!employee) return false;
+    
+    if (!canAccess(employee.role, room)) return false;
+    
+    const roomCount = employees.filter(emp => emp.room === room).length;
+    if (roomCount >= ROOM_CAPACITY) {
+        alert("Room has reached maximum capacity (5 employees)");
+        return false;
     }
-    return false;
+    
+    employee.room = room;
+    SaveEmployees();
+    return true;
 }
 
 // removes an employee from their assigned room

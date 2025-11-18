@@ -55,7 +55,6 @@ body {
     padding: 8px;
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
 .floorplan-container {
@@ -71,7 +70,7 @@ body {
 .floorplan-image {
     position: relative;
     width: 100%;
-    background-image: url('/assets/images/Soutenance.png');
+    background-image: url('/assets/images/Soutenance.webp');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -99,7 +98,7 @@ body {
     gap: 2px;
 }
 
-.room-label h3 {
+.room-label h2 {
     color: white;
     font-size: 16px;
     font-weight: 600;
@@ -132,14 +131,24 @@ body {
 
 .room-label[data-room="Reception"] {
     grid-area: recep;
+    background-color: rgba(255, 107, 107, 0.3);
+    border: 2px transparent rgba(255, 107, 107, 0.6);
+    border-radius: 8px;
 }
 
 .room-label[data-room="Server Room"] {
     grid-area: serv;
+    background-color: rgba(255, 107, 107, 0.3);
+    border: 2px transparent rgba(255, 107, 107, 0.6);
+    border-radius: 8px;
+    margin-right: 90px;
 }
 
 .room-label[data-room="Security Room"] {
     grid-area: sec;
+    background-color: rgba(255, 107, 107, 0.3);
+    border: 2px transparent rgba(255, 107, 107, 0.6);
+    border-radius: 8px;
 }
 
 .room-label[data-room="Staff Room"] {
@@ -148,13 +157,16 @@ body {
 
 .room-label[data-room="Archives Room"] {
     grid-area: arch;
+    background-color: rgba(255, 107, 107, 0.3);
+    border: 2px transparent rgba(255, 107, 107, 0.6);
+    border-radius: 8px;
 }
 
 #AjoutBtn {
     width: 100%;
     padding: 10px;
-    background-color: #0a84ff;
-    color: white;
+    background-color: #005bb5; 
+    color: #ffffff;
     border: none;
     border-radius: 10px;
     font-size: 14px;
@@ -164,10 +176,11 @@ body {
 }
 
 #AjoutBtn:hover {
-    background-color: #0077ed;
+    background-color: #004a94; 
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(10, 132, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 91, 181, 0.3);
 }
+
 
 @media (min-width: 768px) and (max-width: 1023px) {
     .sidebar {

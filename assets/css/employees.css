@@ -1,4 +1,3 @@
-/* Employee Card Styles */
 .employee-card {
     background: white;
     border: 1px solid #e8e8e8;
@@ -58,13 +57,10 @@
     font-weight: 500;
 }
 
-/* Experiences Section in Card */
 .experiences {
     display: none;
-    /* Hide in compact view */
 }
 
-/* Actions Buttons */
 .actions {
     display: flex;
     gap: 6px;
@@ -105,10 +101,34 @@
 
 .room-employees {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 8px;
 }
 
+.room-employees .employee-card {
+    width: 105px;
+    padding: 10px;
+    font-size: 11px;
+}
+
+.room-employees .employee-photo {
+    width: 30px;
+    height: 30px;
+}
+
+.room-employees .employee-header h3 {
+    font-size: 12px;
+}
+
+.room-employees .employee-header p {
+    font-size: 10px;
+}
+
+.room-employees .buttonAssigning {
+    font-size: 10px;
+    padding: 4px 8px;
+}
 
 
 @media (max-width: 767px) {
