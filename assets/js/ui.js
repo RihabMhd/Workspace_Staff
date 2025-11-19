@@ -215,16 +215,32 @@ function getExperiences() {
         const startDate = item.querySelector('.exp-start-date').value;
         const endDate = item.querySelector('.exp-end-date').value;
         const description = item.querySelector('.exp-description').value.trim();
+        
+        let isValid = true;
 
-        if ((company || title)) {
-            experiences.push({
-                company,
-                title,
-                startDate,
-                endDate,
-                description
-            });
+        if (startDate && endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+
+            if (start >= end) {
+                alert('Start date must be before end date.');
+                isValid = false;
+                e.preventDefault();
+            }
         }
+
+        if (isValid) {
+            if ((company || title)) {
+                experiences.push({
+                    company,
+                    title,
+                    startDate,
+                    endDate,
+                    description
+                });
+            }
+        }
+
     });
 
     return experiences;
