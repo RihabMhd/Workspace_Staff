@@ -79,7 +79,7 @@ function displayRoomEmployees(room) {
             e.stopPropagation();
             unassignEmployeeFromRoom(emp.id);
             displayRoomEmployees(room);
-            
+            window.location.reload();
             const unassignedEmployees = getEmployees().filter(e => !e.room);
             displayEmployees(unassignedEmployees);
         });
@@ -121,7 +121,7 @@ function clearEmployeeForm() {
     const form = document.getElementById('employeeForm');
     form.reset();
     document.getElementById('employee-id').value = '';
-    
+
     clearExperiences();
 
     const preview = document.getElementById('photo-preview');
@@ -145,7 +145,7 @@ function addExperienceField(experienceData = null) {
         window.experienceCounter = 0;
     }
     window.experienceCounter++;
-    
+
     const container = document.getElementById('experiencesContainer');
 
     const experienceItem = document.createElement('div');

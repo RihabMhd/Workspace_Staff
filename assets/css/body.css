@@ -131,24 +131,19 @@ body {
 
 .room-label[data-room="Reception"] {
     grid-area: recep;
-    background-color: rgba(255, 107, 107, 0.3);
-    border: 2px transparent rgba(255, 107, 107, 0.6);
-    border-radius: 8px;
 }
 
 .room-label[data-room="Server Room"] {
     grid-area: serv;
+    
+}
+.zone-obligatoire {
     background-color: rgba(255, 107, 107, 0.3);
     border: 2px transparent rgba(255, 107, 107, 0.6);
     border-radius: 8px;
-    margin-right: 90px;
 }
-
 .room-label[data-room="Security Room"] {
     grid-area: sec;
-    background-color: rgba(255, 107, 107, 0.3);
-    border: 2px transparent rgba(255, 107, 107, 0.6);
-    border-radius: 8px;
 }
 
 .room-label[data-room="Staff Room"] {
@@ -157,9 +152,6 @@ body {
 
 .room-label[data-room="Archives Room"] {
     grid-area: arch;
-    background-color: rgba(255, 107, 107, 0.3);
-    border: 2px transparent rgba(255, 107, 107, 0.6);
-    border-radius: 8px;
 }
 
 #AjoutBtn {
@@ -181,6 +173,18 @@ body {
     box-shadow: 0 2px 8px rgba(0, 91, 181, 0.3);
 }
 
+#search {
+  width: 100%;
+  padding: 12px 10px 8px 40px;
+  font-size: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 30px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: #ffffff;
+  color: #333;
+  margin-top: 10px;
+}
 
 @media (min-width: 768px) and (max-width: 1023px) {
     .sidebar {

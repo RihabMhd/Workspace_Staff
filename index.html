@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Directory</title>
-    <meta name="description" content="Manage employees, assign staff to rooms, and view your workplace floor plan with this interactive employee directory tool.">
+    <meta name="description"
+        content="Manage employees, assign staff to rooms, and view your workplace floor plan with this interactive employee directory tool.">
     <link rel="stylesheet" href="./assets/css/body.css">
     <link rel="stylesheet" href="./assets/css/modal.css">
     <link rel="stylesheet" href="./assets/css/employees.css">
@@ -24,6 +25,16 @@
                     Unassigned Staff
                 </h1>
                 <button id="AjoutBtn">Add Staff</button>
+                
+                <div style="position: relative; display: inline-block; width: 100%; max-width: 400px;">
+                    <input type="text" name="search" id="search" placeholder="Search by name or position">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #999; pointer-events: none;">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </div>
             </div>
 
             <div class="employee-list" id="employeeList"></div>

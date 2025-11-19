@@ -68,15 +68,15 @@ export function deleteEmployee(id) {
 export function assignEmployeeToRoom(employeeId, room) {
     const employee = getEmployee(employeeId);
     if (!employee) return false;
-    
+
     if (!canAccess(employee.role, room)) return false;
-    
+
     const roomCount = employees.filter(emp => emp.room === room).length;
     if (roomCount >= ROOM_CAPACITY) {
         alert("Room has reached maximum capacity (5 employees)");
         return false;
     }
-    
+
     employee.room = room;
     SaveEmployees();
     return true;

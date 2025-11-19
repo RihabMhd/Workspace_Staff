@@ -15,13 +15,13 @@ const closeRoom = document.getElementById('closeRoomModal');
 const detail = document.getElementById("employeeDetailModal");
 const closeDetail = document.getElementById('closeDetailModal');
 const list = document.querySelector(".UnassignedEmployeeList");
-
+const search = document.getElementById('search');
 
 let selectedRoom = null;
 
 // this function runs when the page loads and sets everything up
 function init() {
-    loadEmployees(); 
+    loadEmployees();
     refreshUI();
     setupEventListeners();
     addExperienceField();
@@ -64,6 +64,17 @@ function setupEventListeners() {
         });
     });
 
+    search.addEventListener('input', () => {
+        const searchInput = search.value.toLowerCase().trim();
+        console.log(searchInput)
+        const unassignedEmployees = getEmployees().filter(emp => !emp.room);
+        let filtered = unassignedEmployees.filter(emp =>
+            emp.name.toLowerCase().includes(searchInput) ||
+            emp.role.toLowerCase().includes(searchInput)
+        );
+        displayEmployees(filtered);
+    })
+
     employeeForm.addEventListener('submit', handleFormSubmit);
 
     addExperienceBtn.addEventListener('click', () => {
@@ -97,6 +108,41 @@ function openAddEmployeeModal() {
     employeeModal.classList.add('active');
 }
 
+// shows the obligatory zones in red if they are empty
+function zoneObligatoireRed() {
+    const reception = document.getElementById('room-Reception');
+    const receptionDiv = document.querySelector('[data-room="Reception"]');
+    const security = document.getElementById('room-Security Room');
+    const securityDiv = document.querySelector('[data-room="Security Room"]');
+    const server = document.getElementById('room-Server Room');
+    const serverDiv = document.querySelector('[data-room="Server Room"]');
+    const archives = document.getElementById('room-Archives Room');
+    const archivesDiv = document.querySelector('[data-room="Archives Room"]');
+
+    if (reception.innerHTML.trim() !== '') {
+        receptionDiv.classList.remove("zone-obligatoire");
+    } else {
+        receptionDiv.classList.add("zone-obligatoire");
+    }
+
+    if (security.innerHTML.trim() !== '') {
+        securityDiv.classList.remove("zone-obligatoire");
+    } else {
+        securityDiv.classList.add("zone-obligatoire");
+    }
+
+    if (server.innerHTML.trim() !== '') {
+        serverDiv.classList.remove("zone-obligatoire");
+    } else {
+        serverDiv.classList.add("zone-obligatoire");
+    }
+
+    if (archives.innerHTML.trim() !== '') {
+        archivesDiv.classList.remove("zone-obligatoire");
+    } else {
+        archivesDiv.classList.add("zone-obligatoire");
+    }
+}
 // opens the modal to edit an existing employee
 function openEditEmployeeModal(employeeId) {
     const employee = getEmployee(employeeId);
@@ -121,7 +167,7 @@ function openRoomModal() {
 
     list.innerHTML = "";
 
-    const eligibleEmployees = employees.filter(emp => 
+    const eligibleEmployees = employees.filter(emp =>
         !emp.room && canAccess(emp.role, selectedRoom)
     );
 
@@ -262,9 +308,9 @@ function handleFormSubmit(e) {
         role: document.getElementById('employee-role').value.trim(),
         email: document.getElementById('employee-email').value.trim(),
         telephone: document.getElementById('employee-phone').value.trim(),
-        photo: document.getElementById('employee-photo').value.trim(),
+        photo: document.getElementById('employee-photo').value.trim() || 'https://tse3.mm.bing.net/th/id/OIF.HTOXx5VbZKaS0rjZtUiXvw?rs=1&pid=ImgDetMain&o=7&rm=3',
         experiences: getExperiences(),
-        room: null 
+        room: null
     };
 
     if (employeeId) {
@@ -302,11 +348,12 @@ function handleEmployeeListClick(e) {
 function refreshUI() {
     const unassignedEmployees = getEmployees().filter(emp => !emp.room);
     displayEmployees(unassignedEmployees);
-    
+
     const rooms = ['Conference Room', 'Reception', 'Security Room', 'Server Room', 'Staff Room', 'Archives Room'];
     rooms.forEach(room => {
         displayRoomEmployees(room);
     });
+    zoneObligatoireRed();
 }
 
 // makes sure the init function runs when page is ready
