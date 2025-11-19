@@ -136,13 +136,14 @@ body {
 
 .room-label[data-room="Server Room"] {
     grid-area: serv;
-
+    margin-left: -80px;
+    margin-right: 80px;
 }
 
 .zone-obligatoire {
     background-color: rgba(255, 107, 107, 0.3);
     border: 2px transparent rgba(255, 107, 107, 0.6);
-    border-radius: 8px;
+    border-radius: 50%;
 }
 
 .room-label[data-room="Security Room"] {
@@ -215,6 +216,11 @@ body {
         padding-top: 20px;
         align-items: start;
     }
+
+    .room-label[data-room="Server Room"] {
+        grid-area: serv;
+        margin-left: -20px;
+    }
 }
 
 @media (max-width: 767px) {
@@ -232,5 +238,9 @@ body {
         width: 100vh;
     }
 
+    .room-label[data-room="Server Room"] {
+        grid-area: serv;
+        margin-left: -20px;
+    }
 
 }

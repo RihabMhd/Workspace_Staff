@@ -212,11 +212,11 @@ function getExperiences() {
     experienceItems.forEach(item => {
         const company = item.querySelector('.exp-company').value.trim();
         const title = item.querySelector('.exp-title').value.trim();
-        const startDate = item.querySelector('.exp-start-date').value.trim();
-        const endDate = item.querySelector('.exp-end-date').value.trim();
+        const startDate = item.querySelector('.exp-start-date').value;
+        const endDate = item.querySelector('.exp-end-date').value;
         const description = item.querySelector('.exp-description').value.trim();
 
-        if (company || title) {
+        if ((company || title)) {
             experiences.push({
                 company,
                 title,
@@ -229,6 +229,7 @@ function getExperiences() {
 
     return experiences;
 }
+
 
 window.removeExperience = removeExperience;
 

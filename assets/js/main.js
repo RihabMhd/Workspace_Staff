@@ -18,6 +18,7 @@ const closeDetail = document.getElementById('closeDetailModal');
 const list = document.querySelector(".UnassignedEmployeeList");
 const search = document.getElementById('search');
 const automaticAssign = document.getElementById('automatic');
+const toShowModalDetail = document.querySelectorAll('.toshowModal')
 
 let selectedRoom = null;
 
@@ -40,30 +41,41 @@ function setupEventListeners() {
     automaticAssign.addEventListener('click', () => {
         const employees = getEmployees();
         assignAutomatically(employees);
-
     });
 
     list.addEventListener("click", e => {
-        if (e.target.classList.contains("employee-name")) {
-            const card = e.target.closest(".employeeD");
-            if (!card) return;
-
-            const empId = card.dataset.id;
-            const emp = getEmployee(empId);
-            openEmployeeDetail(emp);
-            return;
-        }
-
         if (e.target.classList.contains("assign-btn")) {
-            const card = e.target.closest(".employeeD");
+            e.stopPropagation();
+            const card = e.target.closest(".employee-card");
             if (!card) return;
 
             const empId = card.dataset.id;
             assignEmployeeToRoom(empId, selectedRoom);
             closeRoomModal();
             refreshUI();
+            return;
         }
     });
+
+    toShowModalDetail.forEach((m) => {
+        m.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON' ||
+                e.target.classList.contains('edit-btn') ||
+                e.target.classList.contains('delete-btn') ||
+                e.target.classList.contains('assign-btn')) {
+                return;
+            }
+
+            const card = e.target.closest(".employee-card");
+            if (!card) return;
+
+            const empId = card.dataset.id;
+            const emp = getEmployee(empId);
+            if (emp) {
+                openEmployeeDetail(emp);
+            }
+        })
+    })
 
     addBtns.forEach((addBtn) => {
         addBtn.addEventListener('click', () => {
@@ -165,6 +177,7 @@ function openEditEmployeeModal(employeeId) {
 function closeEmployeeModal() {
     employeeModal.classList.remove('active');
     clearEmployeeForm();
+    search.value='';
 }
 
 // opens the modal to choose an employee to put in a room
@@ -183,7 +196,7 @@ function openRoomModal() {
     } else {
         eligibleEmployees.forEach((emp) => {
             list.innerHTML += `
-                <div class="employeeD employee-card" style="margin:10px" data-id="${emp.id}">
+                <div class="employee-card" style="margin:10px" data-id="${emp.id}">
                     <div class="employee-header">
                         <img src="${emp.photo}" alt="${emp.name}" class="employee-photo" />
                         <div>
@@ -239,6 +252,13 @@ function openEmployeeDetail(emp) {
         <form id="employeeForm">
             <div class="modal-body">
                 <input type="hidden" id="employee-id">
+                
+                 ${emp.room ? `
+                    <div class="form-group">
+                        <label for="employee-name">Location</label>
+                        <input type="text" id="employee-name" required value="${emp.room}" disabled>
+                    </div>
+                ` : ''}
 
                 <div class="form-group">
                     <div id="photo-preview" class="photo-preview">
@@ -358,11 +378,10 @@ export function assignAutomatically(employees) {
         const room = allowedRoom[Math.floor(Math.random() * allowedRoom.length)];
         if (room) {
             assignEmployeeToRoom(emp.id, room);
-        }    
+        }
         displayRoomEmployees(room);
         zoneObligatoireRed();
         displayEmployees(getEmployees().filter(emp => !emp.room));
-
     });
 }
 
