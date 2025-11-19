@@ -360,6 +360,7 @@ export function assignAutomatically(employees) {
             assignEmployeeToRoom(emp.id, room);
         }    
         displayRoomEmployees(room);
+        zoneObligatoireRed();
         displayEmployees(getEmployees().filter(emp => !emp.room));
 
     });
