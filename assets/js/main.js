@@ -2,6 +2,7 @@ import { getEmployees, addEmployee, updateEmployee, deleteEmployee, getEmployee,
 import { displayEmployees, clearEmployeeForm, populateForm, addExperienceField, getExperiences, displayRoomEmployees } from './ui.js';
 import { validateForm, validateField } from './validations.js';
 
+const rooms = ['Conference Room', 'Reception', 'Security Room', 'Server Room', 'Staff Room', 'Archives Room'];
 const employeeModal = document.getElementById('employeeModal');
 const ajoutBtn = document.getElementById('AjoutBtn');
 const closeModalBtn = document.getElementById('closeModal');
@@ -16,6 +17,7 @@ const detail = document.getElementById("employeeDetailModal");
 const closeDetail = document.getElementById('closeDetailModal');
 const list = document.querySelector(".UnassignedEmployeeList");
 const search = document.getElementById('search');
+const automaticAssign = document.getElementById('automatic');
 
 let selectedRoom = null;
 
@@ -34,6 +36,12 @@ function setupEventListeners() {
     cancelBtn.addEventListener('click', closeEmployeeModal);
     closeRoom.addEventListener('click', closeRoomModal);
     closeDetail.addEventListener('click', closeDetailModal);
+
+    automaticAssign.addEventListener('click', () => {
+        const employees = getEmployees();
+        assignAutomatically(employees);
+
+    });
 
     list.addEventListener("click", e => {
         if (e.target.classList.contains("employee-name")) {
@@ -66,7 +74,6 @@ function setupEventListeners() {
 
     search.addEventListener('input', () => {
         const searchInput = search.value.toLowerCase().trim();
-        console.log(searchInput)
         const unassignedEmployees = getEmployees().filter(emp => !emp.room);
         let filtered = unassignedEmployees.filter(emp =>
             emp.name.toLowerCase().includes(searchInput) ||
@@ -344,12 +351,25 @@ function handleEmployeeListClick(e) {
     }
 }
 
+// function to assign each employee to his room automatically
+export function assignAutomatically(employees) {
+    employees.forEach(emp => {
+        const allowedRoom = rooms.filter(room => canAccess(emp.role, room));
+        const room = allowedRoom[Math.floor(Math.random() * allowedRoom.length)];
+        if (room) {
+            assignEmployeeToRoom(emp.id, room);
+        }    
+        displayRoomEmployees(room);
+        displayEmployees(getEmployees().filter(emp => !emp.room));
+
+    });
+}
+
 // refreshes the page to show all employees and rooms
 function refreshUI() {
     const unassignedEmployees = getEmployees().filter(emp => !emp.room);
     displayEmployees(unassignedEmployees);
 
-    const rooms = ['Conference Room', 'Reception', 'Security Room', 'Server Room', 'Staff Room', 'Archives Room'];
     rooms.forEach(room => {
         displayRoomEmployees(room);
     });

@@ -23,6 +23,7 @@ body {
     background: white;
     padding: 24px 20px;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.08);
+    max-height: 100vh;
     overflow-y: auto;
 }
 
@@ -135,13 +136,15 @@ body {
 
 .room-label[data-room="Server Room"] {
     grid-area: serv;
-    
+
 }
+
 .zone-obligatoire {
     background-color: rgba(255, 107, 107, 0.3);
     border: 2px transparent rgba(255, 107, 107, 0.6);
     border-radius: 8px;
 }
+
 .room-label[data-room="Security Room"] {
     grid-area: sec;
 }
@@ -154,10 +157,11 @@ body {
     grid-area: arch;
 }
 
-#AjoutBtn {
+#AjoutBtn,
+#automatic {
     width: 100%;
     padding: 10px;
-    background-color: #005bb5; 
+    background-color: #005bb5;
     color: #ffffff;
     border: none;
     border-radius: 10px;
@@ -165,25 +169,36 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
+    margin-top: 10px;
 }
 
-#AjoutBtn:hover {
-    background-color: #004a94; 
+#AjoutBtn:hover,
+#automatic:hover {
+    background-color: #004a94;
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0, 91, 181, 0.3);
 }
 
 #search {
-  width: 100%;
-  padding: 12px 10px 8px 40px;
-  font-size: 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 30px;
-  outline: none;
-  transition: all 0.3s ease;
-  background-color: #ffffff;
-  color: #333;
-  margin-top: 10px;
+    width: 100%;
+    padding: 12px 10px 8px 40px;
+    font-size: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 30px;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    color: #333;
+    margin-top: 10px;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -206,18 +221,16 @@ body {
     .container {
         flex-direction: column;
     }
+
     .sidebar {
-        max-height: 300px;      
+        max-height: 300px;
         overflow-y: auto;
-          width: 100%   
+        width: 100%
     }
 
-    .sidebar::-webkit-scrollbar {
-        width: 8px;
+    #search {
+        width: 100vh;
     }
 
-    .sidebar::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 4px;
-    }
+
 }
