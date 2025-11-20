@@ -21,7 +21,7 @@ function displayEmployees(employees) {
             <div class="employee-header">
                 <img src="${photoUrl}" alt="${emp.name}" class="employee-photo" />
                 <div>
-                    <h3>${emp.name}</h3>
+                    <h2>${emp.name}</h2>
                     <p><strong>Rôle :</strong> ${emp.role}</p>
                 </div>
             </div>
