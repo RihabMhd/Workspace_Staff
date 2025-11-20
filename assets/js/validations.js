@@ -79,7 +79,7 @@ function validateForm() {
     
     return isValid;
 }
-
+// function toggle for the two span errors of the date
 function toggleErrorForDateField(field, show, message = '') {
     if (!field) return;
     
@@ -103,7 +103,7 @@ function toggleErrorForDateField(field, show, message = '') {
         field.style.backgroundColor = '#d1fae5';
     }
 }
-
+// function to validate start date < end date
 function validateDatePair(startDate, endDate, experienceItem) {
     const startDateField = experienceItem.querySelector('.exp-start-date');
     const endDateField = experienceItem.querySelector('.exp-end-date');
@@ -136,7 +136,7 @@ function validateDatePair(startDate, endDate, experienceItem) {
     
     return isValid;
 }
-
+// function to validate date
 function validateDate() {
     const experienceItems = document.querySelectorAll('.experience-item');
     let allValid = true;
