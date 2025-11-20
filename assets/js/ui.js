@@ -160,7 +160,8 @@ function addExperienceField(experienceData = null) {
         
         <div class="form-group">
             <label>Company</label>
-            <input type="text" class="exp-company" value="${experienceData?.company || ''}" required>
+            <input type="text" class="exp-company" id="exp-company" value="${experienceData?.company || ''}" required>
+            <span class="error-message hidden" id="exp-company-error"></span>
         </div>
         
         <div class="form-group">
@@ -171,11 +172,13 @@ function addExperienceField(experienceData = null) {
         <div class="form-group">
             <label>Start Date</label>
             <input type="date" class="exp-start-date" value="${experienceData?.startDate || ''}" required>
+            <span class="error-message hidden" id="exp-start-date-error"></span>
         </div>
 
         <div class="form-group">
             <label>End Date</label>
             <input type="date" class="exp-end-date" value="${experienceData?.endDate || ''}" required>
+            <span class="error-message hidden" id="exp-end-date-error"></span>
         </div>
         
         <div class="form-group">
@@ -215,31 +218,17 @@ function getExperiences() {
         const startDate = item.querySelector('.exp-start-date').value;
         const endDate = item.querySelector('.exp-end-date').value;
         const description = item.querySelector('.exp-description').value.trim();
-        
-        let isValid = true;
 
-        if (startDate && endDate) {
-            const start = new Date(startDate);
-            const end = new Date(endDate);
-
-            if (start >= end) {
-                alert('Start date must be before end date.');
-                isValid = false;
-                e.preventDefault();
-            }
+        if ((company || title)) {
+            experiences.push({
+                company,
+                title,
+                startDate,
+                endDate,
+                description
+            });
         }
 
-        if (isValid) {
-            if ((company || title)) {
-                experiences.push({
-                    company,
-                    title,
-                    startDate,
-                    endDate,
-                    description
-                });
-            }
-        }
 
     });
 

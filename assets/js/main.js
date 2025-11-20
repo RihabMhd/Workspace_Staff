@@ -100,7 +100,7 @@ function setupEventListeners() {
         addExperienceField();
     });
 
-    const validationFields = ['employee-name', 'employee-email', 'employee-phone'];
+    const validationFields = ['employee-name', 'employee-email', 'employee-phone', 'exp-company'];
     validationFields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
@@ -177,7 +177,7 @@ function openEditEmployeeModal(employeeId) {
 function closeEmployeeModal() {
     employeeModal.classList.remove('active');
     clearEmployeeForm();
-    search.value='';
+    search.value = '';
 }
 
 // opens the modal to choose an employee to put in a room
@@ -327,6 +327,7 @@ function handleFormSubmit(e) {
         alert('Please fix the validation errors before submitting.');
         return;
     }
+ 
 
     const employeeId = document.getElementById('employee-id').value;
     const employeeData = {
