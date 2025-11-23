@@ -104,7 +104,6 @@ function populateForm(employee) {
         preview.classList.remove('hidden');
     }
 
-    // FIXED: Clear experiences first and reset counter
     clearExperiences();
 
     if (employee.experiences && employee.experiences.length > 0) {
